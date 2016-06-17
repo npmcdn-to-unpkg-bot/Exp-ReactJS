@@ -1,0 +1,37 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js"></script>
+<script src="https://npmcdn.com/classnames/index.js"></script>
+<script src="https://npmcdn.com/react-input-autosize/dist/react-input-autosize.js"></script>
+<script src="https://npmcdn.com/react-select/dist/react-select.js"></script>
+
+<link rel="stylesheet" href="https://npmcdn.com/react-select/dist/react-select.css">
+<script type="text/babel">
+var Select = require('react-select');
+
+var options = [
+    { value: 'one', label: 'One' },
+    { value: 'two', label: 'Two' }
+];
+
+function logChange(val) {
+    console.log("Selected: " + val);
+}
+
+ReactDOM.render(
+  <Select
+    name="form-field-name"
+    value="one"
+    options={options}
+    onChange={logChange}
+/>,
+  document.getElementById('example')
+);
+</script>
+<div class="page-body">
+		<div class="container">
+			<form>
+				<!-- the React application is loaded in the #example element -->
+				<div id="example"></div>
+			</form>
+		</div>
+</div>

@@ -1,0 +1,5 @@
+https://react.rocks/tag/Multiselect
+
+
+https://github.com/instructure-react/react-select-box
+https://github.com/JedWatson/react-select

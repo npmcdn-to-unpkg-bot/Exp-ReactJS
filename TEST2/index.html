@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#5e4fa2">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>React Select Box Example</title>
+    <!-- REACT-->
+	<script src="build/react.js"></script>
+	<script src="build/react-dom.js"></script>
+	<script src="build/browser.min.js"></script>
+	<script src="build/jquery.min.js"></script>
+  <script type="text/babel">
+var Form = React.createClass({displayName: "Form",
+    
+    // render :: a -> ReactElement
+    render: function(){
+        var self = this;
+        return React.createElement("div", null, 
+            function(){
+                if (self.state.selectedCountries.length > 0)
+                    return React.createElement("div", {style: {margin: 8}}, 
+                        React.createElement("span", null, "you selected: "), 
+                        React.createElement("span", {style: {fontWeight: "bold"}}, 
+                            self.state.selectedCountries.map(function(selectedCountry){
+                                return selectedCountry.label;
+                            }).join(", ")
+                        )
+                    )
+            }(), 
+            React.createElement(MultiSelect, {
+                ref: "select", 
+                placeholder: "Select countries", 
+                options: this.state.countries, 
+                value: this.state.selectedCountries, 
+
+                // onValueChange :: Item -> (a -> Void) -> void
+                onValuesChange: function(selectedCountries){
+                    self.setState({selectedCountries: selectedCountries});
+                }, 
+
+                // renderNoResultsFound :: a -> ReactElement
+                renderNoResultsFound: function() {
+                    return React.createElement("div", {className: "no-results-found"}, 
+                        !!self.req ? "loading countries ..." : "No results found"
+                    )
+                }}
+            )
+        )
+    },
+
+    // getInitialState :: a -> UIState
+    getInitialState: function(){
+        return {
+            countries: [],
+            selectedCountries: []
+        };
+    },
+
+    // component-will-mount :: a -> Void
+    componentWillMount: function(){
+        var self = this;
+        this.req = $.getJSON("http://restverse.com/countries").done(function(countries){
+            self.setState({countries: countries}, function(){
+                self.refs.select.highlightFirstSelectableOption();
+            });
+        }).always(function(){
+            delete self.req;
+        });
+    }
+    
+});
+
+ReactDOM.render(<Form />, document.getElementById('example2'));
+render(React.createElement(Form, null), mountNode)
+  </script>
+	<!--REACT ENDS -->
+  <link rel="stylesheet" href="bootstrap-multiselect.css" type="text/css" />
+  </head>
+  <body>
+  	<div id="example2">Helooooooooooo!</div>
+  </body>
+</html>
