@@ -140,7 +140,7 @@ var SelectBox = React.createClass({displayName: 'exports',
   handleOpen: function (event) {
     interceptEvent(event)
     this.setState({open: true}, function () {
-      ReactDOM.findDOMNode(this).focus()
+      ReactDOM.findDOMNode(this.refs.button).focus()
     })
   },
 
@@ -269,7 +269,7 @@ var SelectBox = React.createClass({displayName: 'exports',
     }
     return (
       <div onKeyDown={this.handleKeyDown}
-           className={this.className} >
+           className={className} >
         <button id={this.state.id}
             ref='button'
             className='react-select-box'
@@ -278,7 +278,7 @@ var SelectBox = React.createClass({displayName: 'exports',
             tabIndex='0'
             aria-hidden='true'>
             <div className='react-select-box-label'>
-              {this.label()}
+              {this.label}
             </div>
         </button>
         {this.renderOptionMenu()}
@@ -318,19 +318,33 @@ var SelectBox = React.createClass({displayName: 'exports',
       active = this.state.id + '-' + this.state.focusedIndex
     }
     */
+    var id = this.state.id + '-native-select'
+    var multiple = this.isMultiple()
+    var empty = multiple ? null : option({key: '', value: ''}, 'No Selection')
+    var options = [empty].concat(this.props.children)
     return ( 
-    <div>
     <div className={className}
         onBlur={this.handleBlur}
         onFocus={this.handleFocus}
         aria-hidden="true"
         ref='menu'
         tabIndex="0">
-    </div>
+
     <div className='react-select-box-off-screen'>
-    {this.options().map(this.renderOption)}
+     
+
+
+      <select id={id}
+        multiple={multiple}
+        onKeyDown={function (e) { e.stopPropagation() }}
+        value={this.props.value || (multiple ? [] : '')}
+        onChange={this.handleNativeChange}>
+        {options}
+      </select>
+
+
     </div>
-    {this.renderCloseButton()}
+    {this.renderCloseButton}
     </div>
     )
   },
@@ -349,7 +363,7 @@ var SelectBox = React.createClass({displayName: 'exports',
         href='#'
         onClick={this.handleChange(option.value)}
         onMouseDown={this.handleMouseDown}
-        className={this.className}
+        className={className}
         tabIndex="-1"
         key={option.value}
         onBlur={this.handleBlur}
